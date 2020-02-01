@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> 
+    <h:head> 
+        <title>Holiday Booking</title> 
+        <h:outputStylesheet library="css" name="bootstrap-min.css"></h:outputStylesheet>
+        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </h:head> 
+    <h:body class="container"> 
+        <!-- Start Header --> 
+        <header> 
+            <h1>Holiday Booking System</h1> 
+        </header> 
+        <!-- End Header --> 
+        <h:form>
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">Enjoy Your Vacation   </a>
+                    </div>
+                    <ul class="nav navbar-nav">
+<!--                        <li><h:commandLink value = "Booking" action = "booking"></h:commandLink></li>
+                        <li><h:commandLink value = "User Management" action = "userManagement"></h:commandLink> </li>
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Manage Transactions<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Page 1-1</a></li>
+                                <li><a href="#">Page 1-2</a></li>
+                                <li><a href="#">Page 1-3</a></li>
+                            </ul>
+                        </li>-->
+                        <li><h:commandLink value = "Searching" action = "index"></h:commandLink></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><h:commandLink value = "Regisiter" action = "register"></h:commandLink></li>
+                        <li><h:outputLink value="users/index.xhtml">User</h:outputLink></li>
+                        <li><h:outputLink value="admin/index.xhtml">Admin</h:outputLink></li>
+                    </ul>
+                </div>
+            </nav>
+        </h:form>
+        <!-- Start Article --> 
+        <article> 
+            <h3>Login</h3> 
+            <hr /> 
+            <!-- Form -->
+            <div class="well bs-component form-horizontal">
+                <div class="form-group center-block" style="text-align:center;">
+                    <h:form id="login" onsubmit="jaas_check()" prependId="false">
+                        <div class="form-group">
+                            <h:outputLabel class="col-lg-4 control-label" for="j_username" value="Email"></h:outputLabel>
+                            <div class="col-lg-3">
+                                <h:inputText class="form-control" id="j_username" size="20" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <h:outputLabel class="col-lg-4 control-label" for="j_password" value="Password"></h:outputLabel>
+                            <div class="col-lg-3">
+                                <h:inputSecret class="form-control" id="j_password" size="20"/>
+                            </div>
+                        </div>
+                        <h:commandButton type="submit" class="btn btn-primary" id="submit"  value="Login" >
+                        </h:commandButton>
+                    </h:form>
+
+                </div>
+            </div>
+
+            <!-- End Form --> 
+        </article> 
+        <!-- End Article --> 
+        <!-- Start Footer --> 
+        <footer> 
+            <p>This project created by Danyang Chen</p> 
+        </footer> 
+        <!-- End Footer --> 
+    </h:body> 
+    <script>
+        function jaas_check(){
+            document.getElementById('login').action = 'j_security_check';
+        }
+    </script>
+</html>
+

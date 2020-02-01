@@ -1,0 +1,75 @@
+<!DOCTYPE html> 
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> 
+    <h:head> 
+        <title>Holiday Booking</title> 
+        <h:outputStylesheet library="css" name="bootstrap-min.css"></h:outputStylesheet>
+        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </h:head> 
+    <h:body class="container"> 
+        <!-- Start Header --> 
+        <header> 
+            <h1>Holiday Booking Administrator System</h1> 
+        </header> 
+        <!-- End Header --> 
+        <h:form id="nvForm">
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">Enjoy Your Vacation   </a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <!--<li><h:commandLink value = "Booking" action = "booking"></h:commandLink> </li>-->
+                        <li><h:commandLink value = "User Management" action = "userManagement"></h:commandLink> </li>
+                        <li class="active"><h:commandLink value = "Type Management" action = "typeManagement"></h:commandLink> </li>
+                        <li><h:commandLink value = "Searching" action = "index"></h:commandLink></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <ui:fragment rendered="#{not empty request.remoteUser}">
+                            <li>
+                                <h:commandLink value = "#{request.remoteUser}" action = "editUser">
+                                    <f:actionListener binding="#{editUserBean.initValues()}" />
+                                </h:commandLink>
+                            </li>
+                            <li><h:commandLink value = "Log Out" action = "#{request.logout()}"></h:commandLink></li>
+                        </ui:fragment>
+                        <ui:fragment rendered="#{empty request.remoteUser}">
+                            <li><h:commandLink value = "Sign In" action = "register"></h:commandLink></li>
+                            <li><h:outputLink value="admin/index.xhtml">Admin</h:outputLink></li>
+                            <li><h:outputLink value="users/index.xhtml">User</h:outputLink></li>
+                        </ui:fragment>
+
+                    </ul>
+                </div>
+            </nav>
+        </h:form>
+
+        <!-- Start Article --> 
+        <article> 
+            <h3>Add types by Restful Web Services</h3> 
+            <hr /> 
+            <!-- Form -->
+
+            <f:view>
+                <h:form>
+                    <!-- Name input -->
+                    <p>Your name: <h:message for="name" styleClass="error" /></p>
+                    <h:inputText id="name" label="Name" size="32" value="#{webServiceBean.name}" required="true" requiredMessage="You must enter a name!"></h:inputText>
+                    <h:commandButton id="submit" value="Submit" action="#{webServiceBean.setNameWebservice}" />
+                </h:form>
+            </f:view>
+            <p>View The  <a href="webresources/greeting"> Greeting</a>.</p>
+
+        </article> 
+        <!--End Article-->  
+        <!-- Start Footer --> 
+        <footer> 
+            <p>This project created by Danyang Chen, current user is #{sessionController.email}</p> 
+
+    </h:body>
+</html>
+

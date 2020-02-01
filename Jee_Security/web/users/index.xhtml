@@ -1,0 +1,159 @@
+<!DOCTYPE html> 
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> 
+    <h:head> 
+        <title>Holiday Booking</title> 
+        <h:outputStylesheet library="css" name="bootstrap-min.css"></h:outputStylesheet>
+        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </h:head> 
+    <h:body class="container"> 
+        <!-- Start Header --> 
+        <header> 
+            <h1>Holiday Booking System</h1> 
+        </header> 
+        <!-- End Header --> 
+        <h:form id="nvForm">
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">Enjoy Your Vacation   </a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li><h:commandLink value = "Booking" action = "booking"></h:commandLink> </li>
+<!--                        <li><h:commandLink value = "User Management" action = "userManagement"></h:commandLink> </li>
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Manage Transactions<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Page 1-1</a></li>
+                                <li><a href="#">Page 1-2</a></li>
+                                <li><a href="#">Page 1-3</a></li>
+                            </ul>
+                        </li>-->
+                        <li class="active"><h:commandLink value = "Searching" action = "index"></h:commandLink></li>
+                        <li><h:commandLink value = "Manage Transaction" action = "transactionManagement"></h:commandLink></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <ui:fragment rendered="#{not empty request.remoteUser}">
+                            <li>
+                                <h:commandLink value = "#{request.remoteUser}" action = "editUser">
+                                    <f:actionListener binding="#{editUserBean.initValues()}" />
+                                </h:commandLink>
+                            </li>
+                            <li><h:commandLink value = "Log Out" action = "#{request.logout()}"></h:commandLink></li>
+                        </ui:fragment>
+                        <ui:fragment rendered="#{empty request.remoteUser}">
+                            <li><h:commandLink value = "Sign In" action = "register"></h:commandLink></li>
+                            <li><h:outputLink value="admin/index.xhtml">Admin</h:outputLink></li>
+                            <li><h:outputLink value="users/index.xhtml">User</h:outputLink></li>
+                        </ui:fragment>
+
+                    </ul>
+                </div>
+            </nav>
+        </h:form>
+        <!-- Start Article --> 
+        <article> 
+            <h3>Search for transactions</h3> 
+            <hr /> 
+            <!-- Form -->
+            <div class="well bs-component form-horizontal">
+                <h:form id="searchForm"> 
+                    <fieldset>
+                        <!--                        <legend>Please select transaction category
+                                                </legend>-->
+
+                        <div class="form-group">
+                            <h:outputLabel class="col-lg-2 control-label" value="Select Transaction" />
+                            <div class="col-lg-2">
+                                <h:selectOneMenu id="search_type" class="form-control" value="#{transactionBean.option}">
+                                    <f:selectItem itemLabel="Number" itemValue="Number"/>
+                                    <f:selectItem itemLabel="Name" itemValue="Name"/>
+                                    <f:selectItem itemLabel="Type" itemValue="Type"/>
+                                </h:selectOneMenu>
+                            </div>
+
+                            <div class="col-lg-4 #{!input.valid ? 'has-error' : 'none'}">
+                                <h:inputText id="input" 
+                                             class="form-control"
+                                             label="Name" size="32" value="#{transactionBean.input}" binding="#{input}" required="true" 
+                                             requiredMessage="Please enter searching criteria!"></h:inputText> 
+                                <h:message for="input" class="#{!input.valid ? 'label label-warning' : 'none'}" />
+                            </div>
+
+                            <div class="col-lg-2">
+                                <h:selectBooleanCheckbox id="showAll" class="form-check" value="true"/>
+                                <h:outputLabel for="inputName" class="control-label" value="Show all results" />
+                            </div>
+
+
+                            <div class="col-lg-2">
+                                <h:commandButton id="submit" value="Search" action="#{transactionBean.searchTransaction}" class="btn btn-primary"/>  
+                            </div>
+
+                        </div>
+
+                        <br></br>
+
+                        <!--                        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Simple collapsible</button>
+                                                <div id="demo" class="collapse">-->
+                        <div class="form-group">
+                            <div class="col-lg-10 col-sm-offset-1">
+                                <h:dataTable value="#{transactionBean.transactions}" id="dataTable" class="table table-striped" rendered="#{not empty transactionBean.transactions}" var="transactions">
+                                    <h:column>
+                                        <f:facet name="header">Transaction NO</f:facet>
+                                            #{transactions.transactionNO}
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">Name</f:facet>
+                                            #{transactions.transactionName}
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">Type</f:facet>
+                                        <ui:repeat value="#{transactions.transactionType}" var="type">
+                                            #{type.typeName}
+                                        </ui:repeat>
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">Description</f:facet>
+                                            #{transactions.description}
+                                    </h:column>
+
+                                </h:dataTable>
+                                <!--</div>-->
+                            </div>
+                        </div>
+
+
+                    </fieldset>
+                </h:form>
+            </div>
+
+            <!-- End Form --> 
+        </article> 
+         <!--End Article-->  
+        <!-- Start Footer --> 
+        <footer> 
+            <p>This project created by Danyang Chen, current user is #{sessionController.email}</p> 
+            
+
+        </footer> 
+        <!-- End Footer --> 
+    </h:body> 
+    <script>
+        var dataTable = document.getElementById('searchForm:dataTable');
+        var showResult = document.getElementById("searchForm:showAll").checked;
+        if (!showResult){
+            for (var i = 0; i &lt; dataTable.rows.length; i++){
+                for (var j = 0; j &lt; dataTable.rows[i].cells.length; j++){
+                    dataTable.rows[i].cells[j].style.display = "";
+                    if (j == 2 || j == 3)
+                        dataTable.rows[i].cells[j].style.display = "none";
+                }
+            }
+        }
+    </script>
+</html>
+

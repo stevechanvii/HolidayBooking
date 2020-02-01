@@ -1,0 +1,212 @@
+<!DOCTYPE html> 
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> 
+    <h:head> 
+        <title>Holiday Booking</title> 
+        <h:outputStylesheet library="css" name="bootstrap-min.css"></h:outputStylesheet>
+        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </h:head> 
+    <h:body class="container"> 
+        <!-- Start Header --> 
+        <header> 
+            <h1>Holiday Booking Administrator System</h1> 
+        </header> 
+        <!-- End Header --> 
+        <h:form>
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">Enjoy Your Vacation   </a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <!--<li><h:commandLink value = "Booking" action = "booking"></h:commandLink> </li>-->
+                        <li class="active"><h:commandLink value = "User Management" action = "userManagement"></h:commandLink> </li>
+                        <li><h:commandLink value = "Type Management" action = "typeManagement"></h:commandLink> </li>
+                        <li><h:commandLink value = "Searching" action = "index"></h:commandLink></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <ui:fragment rendered="#{not empty request.remoteUser}">
+                            <li>
+                                <h:commandLink value = "#{request.remoteUser}" action = "editUser">
+                                    <f:actionListener binding="#{editUserBean.initValues()}" />
+                                </h:commandLink>
+                            </li>
+                            <li><h:commandLink value = "Log Out" action = "#{request.logout()}"></h:commandLink></li>
+                        </ui:fragment>
+                        <ui:fragment rendered="#{empty request.remoteUser}">
+                            <li><h:commandLink value = "Regisiter" action = "register"></h:commandLink></li>
+                            <li><h:outputLink value="users/index.xhtml">User</h:outputLink></li>
+                            <li><h:outputLink value="admin/index.xhtml">Admin</h:outputLink></li>
+                        </ui:fragment>
+                    </ul>
+                </div>
+            </nav>
+        </h:form>
+        <!-- Start Article --> 
+        <article> 
+            <h3>User Management</h3> 
+            <hr /> 
+            <!-- Form -->
+            <div class="well bs-component form-horizontal">
+                <h:form id="userForm"> 
+                    <fieldset>
+                        <!--                        <legend>Please select transaction category
+                                                </legend>-->
+
+                        <div class="form-group">
+                            <div class="form-group">
+                                <h:outputLabel for="userId" class="col-lg-1 control-label" value="User ID" />
+                                <div class="col-lg-2 #{!userId.valid ? 'has-error' : 'none'}">
+                                    <h:inputText id="userId" 
+                                                 class="form-control"
+                                                 label="Name" size="32" value="#{userManagementBean.userId}" binding="#{userId}"
+                                                 converterMessage="Please enter a number">
+                                        <f:ajax event="blur" render="userIdMessage" />
+                                        <f:convertNumber integerOnly="true"/>
+                                        <f:validateLongRange minimum="1" maximum="999999" /> 
+                                    </h:inputText>
+                                    <h:message id="userIdMessage" for="userId" class="#{!userId.valid ? 'label label-warning' : 'none'}" />
+                                </div>
+
+                                <h:outputLabel for="firstName" class="col-lg-2 control-label" value="First Name" />
+                                <div class="col-lg-2 #{!firstName.valid ? 'has-error' : 'none'}">
+                                    <h:inputText id="firstName" 
+                                                 class="form-control"
+                                                 label="Name" size="32" value="#{userManagementBean.firstName}" binding="#{firstName}">
+<!--                                        <f:ajax event="blur" render="firstNameMessage" />-->
+                                    </h:inputText> 
+                                    <h:message id="firstNameMessage" for="firstName" class="#{!firstName.valid ? 'label label-warning' : 'none'}" />
+                                </div>
+
+                                <h:outputLabel for="lastName" class="col-lg-2 control-label" value="Last Name" />
+                                <div class="col-lg-2 #{!lastName.valid ? 'has-error' : 'none'}">
+                                    <h:inputText id="lastName" 
+                                                 class="form-control"
+                                                 label="Name" size="32" value="#{userManagementBean.lastName}" binding="#{lastName}"></h:inputText> 
+                                    <h:message for="lastName" class="#{!lastName.valid ? 'label label-warning' : 'none'}" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <h:outputLabel for="type" class="col-lg-1 control-label" value="Type" />
+                                <div class="col-lg-2">
+                                    <h:selectOneMenu id="type" class="form-control" value="#{userManagementBean.type}">
+                                        <f:selectItem itemLabel="Public" itemValue="Public"/>
+                                        <f:selectItem itemLabel="Worker" itemValue="Worker"/>
+                                    </h:selectOneMenu>
+                                </div>
+
+                                <h:outputLabel for="email" class="col-lg-2 control-label" value="Email" />
+                                <div class="col-lg-3 #{!email.valid ? 'has-error' : 'none'}">
+                                    <h:inputText id="email" 
+                                                 class="form-control"
+                                                 label="Name" size="32" value="#{userManagementBean.email}" binding="#{email}"
+                                                 validatorMessage="Incorrect Email">
+                                        <f:ajax event="blur" render="emailMessage" />
+                                        <f:validateRegex pattern = "^$|^.*@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$" />
+                                    </h:inputText> 
+                                    <h:message id="emailMessage" for="email" class="#{!email.valid ? 'label label-warning' : 'none'}" />
+                                </div>
+
+                                <div class="col-lg-2">
+                                    <h:commandButton id="submit" value="Search Users" action="#{userManagementBean.searchUser()}" class="btn btn-primary pull-right" >
+                                        <f:ajax execute="userId firstName lastName type email" render=":tableForm" />
+                                    </h:commandButton>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <br></br>
+                    </fieldset>
+                </h:form>
+
+                <h:form id="tableForm">
+                    <fieldset>
+                        <!--                        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Simple collapsible</button>
+                                                <div id="demo" class="collapse">-->
+                        <div class="form-group">
+                            <h:inputHidden id="userNumber" value="#{userManagementBean.userNumber}" />
+                            <div class="col-lg-10 col-sm-offset-1">
+                                <h:dataTable value="#{userManagementBean.userList}" id="dataTable" class="table table-striped" rendered="#{not empty userManagementBean.userList}" var="users">
+                                    <h:column>
+                                        <f:facet name="header">NO</f:facet>
+                                            #{users.id}
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">Name</f:facet>
+                                            #{users.firstName} #{users.lastName}
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">Email</f:facet>
+                                            #{users.email}
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">Address</f:facet>
+                                            #{users.address.street} #{users.address.suburb} #{users.address.state}
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">Operation</f:facet>
+                                        <!--<h:commandButton id="edit" type="button" value="Edit" onclick="editUser(this.id)" class="btn btn-primary btn-xs" />-->
+                                        
+                                        <h:commandButton id="delete" type="button" action="#{userManagementBean.deleteUser()}" onclick="return confirm('Are you sure to delete user #{users.firstName} #{users.lastName}?')" value="Delete" class="btn btn-warning btn-xs" style="margin-left: 10px" >
+                                            <f:param name="userID" value="#{users.id}" />
+                                        </h:commandButton>
+                                        
+                                    </h:column>
+                                </h:dataTable>
+                                <!--</div>-->
+                            </div>
+                        </div>
+
+
+                    </fieldset>
+                </h:form>
+            </div>
+
+            <!-- End Form --> 
+        </article> 
+        <!-- End Article --> 
+        <!-- Start Footer --> 
+        <footer> 
+            <p>This project created by Danyang Chen</p> 
+        </footer> 
+        <!-- End Footer --> 
+    </h:body> 
+    <script>
+        function editUser(id) {
+            var dataTable = getTable();
+            var userNumber = dataTable.rows[getIndex(id) + 1].cells[0].innerHTML;
+            var row = dataTable.rows[getIndex(id) + 1];
+            var newElement = document.createElement("input");
+            newElement.value = row.cells[2].innerHTML.trim();
+            row.cells[2].innerHTML = "";
+            row.cells[2].appendChild(newElement);
+            
+            var buttonEdit = row.cells[4].childNodes;
+            buttonEdit[0].value = "Submit";
+        }
+
+        function deleteUser(id) {
+            var dataTable = getTable();
+            var userNumber = dataTable.rows[getIndex(id) + 1].cells[0].innerHTML;
+            dataTable.rows[getIndex(id) + 1].style.display = "none";
+        }
+
+        function getIndex(s) {
+            var r = /\d+/;
+            return parseInt(s.match(r));
+        }
+
+        function getTable() {
+            return document.getElementById('tableForm:dataTable');
+        }
+
+
+    </script>
+</html>
+

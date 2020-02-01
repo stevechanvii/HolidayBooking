@@ -1,0 +1,113 @@
+<!DOCTYPE html> 
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> 
+    <h:head> 
+        <title>Holiday Booking</title> 
+        <h:outputStylesheet library="css" name="bootstrap-min.css"></h:outputStylesheet>
+        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </h:head> 
+    <h:body class="container"> 
+        <!-- Start Header --> 
+        <header> 
+            <h1>Holiday Booking System</h1> 
+        </header> 
+        <!-- End Header --> 
+        <h:form>
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">Enjoy Your Vacation   </a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">Booking</a></li>
+<!--                        <li><h:commandLink value = "User Management" action = "userManagement"></h:commandLink> </li>
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Manage Transactions<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Page 1-1</a></li>
+                                <li><a href="#">Page 1-2</a></li>
+                                <li><a href="#">Page 1-3</a></li>
+                            </ul>
+                        </li>-->
+                        <li><h:commandLink value = "Searching" action = "index"></h:commandLink></li>
+                        <li><h:commandLink value = "Manage Transaction" action = "transactionManagement"></h:commandLink></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <ui:fragment rendered="#{not empty request.remoteUser}">
+                            <li>
+                                <h:commandLink value = "#{request.remoteUser}" action = "editUser">
+                                    <f:actionListener binding="#{editUserBean.initValues()}" />
+                                </h:commandLink>
+                            </li>
+                            <li><h:commandLink value = "Log Out" action = "#{request.logout()}"></h:commandLink></li>
+                        </ui:fragment>
+                        <ui:fragment rendered="#{empty request.remoteUser}">
+                            <li><h:commandLink value = "Regisiter" action = "register"></h:commandLink></li>
+                            <li><h:outputLink value="users/index.xhtml">User</h:outputLink></li>
+                            <li><h:outputLink value="admin/index.xhtml">Admin</h:outputLink></li>
+                        </ui:fragment>
+                    </ul>
+                </div>
+            </nav>
+        </h:form>
+        <!-- Start Article --> 
+        <article> 
+            <h3>Making a Holiday Booking</h3> 
+            <hr /> 
+            <!-- Form -->
+            <div class="well bs-component form-horizontal">
+                <h:form> 
+                    <fieldset>
+                        <!--                        <legend>Please select transaction category
+                                                </legend>-->
+
+                        <div class="form-group">
+                            <h:outputLabel for="name" class="col-lg-2 control-label">Make a Booking</h:outputLabel>
+                            <div class="col-lg-4 #{!name.valid ? 'has-error' : 'none'}">
+                                <h:inputText id="name" 
+                                             class="form-control" binding="#{name}"
+                                             label="Name" size="32" value="#{bookingBean.name}" required="true" 
+                                             requiredMessage="Please enter searching criteria!"></h:inputText> 
+                                <h:message for="name" class="#{!name.valid ? 'label label-warning' : 'none'}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <h:outputLabel for="type" class="col-lg-2 control-label" value="Payment Mathod" />
+                            <h:selectManyCheckbox id="type" value = "#{bookingBean.type}"> 
+                                <f:selectItem itemValue = "1" itemLabel = "Cash" /> 
+                                <f:selectItem itemValue = "2" itemLabel = "Credit Card" /> 
+                                <f:selectItem itemValue = "3" itemLabel = "Cheque" /> 
+                                <f:selectItem itemValue = "4" itemLabel = "Bank Transafer" />
+                                <f:selectItem itemValue = "5" itemLabel = "Voucher" />
+                            </h:selectManyCheckbox>
+                        </div>
+                        <div class="form-group">
+                            <h:outputLabel for="desc" class="col-lg-2 control-label" value="Description" />
+                            <h:inputTextarea id="desc" class="form-control" rows="7" value = "#{bookingBean.description}"/>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <h:commandButton id="submit" value="Create Transaction" action="#{bookingBean.addTransaction}" class="btn btn-primary" >
+                                <f:param name="userEmail" value="#{request.remoteUser}" />
+                            </h:commandButton>
+                        </div>
+
+
+                    </fieldset>
+                </h:form>
+            </div>
+
+            <!-- End Form --> 
+        </article> 
+        <!-- End Article --> 
+        <!-- Start Footer --> 
+        <footer> 
+            <p>This project created by Danyang Chen</p> 
+        </footer> 
+        <!-- End Footer --> 
+    </h:body> 
+</html>
+
